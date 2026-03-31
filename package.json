@@ -1,9 +1,9 @@
 {
-  "name": "aiagent",
+  "name": "xmai",
   "private": true,
   "packageManager": "pnpm@9.15.3",
   "scripts": {
-    "dev": "pnpm --filter @aiagent/cli dev",
+    "dev": "pnpm --filter @xmai/cli dev",
     "build": "pnpm -r build",
     "typecheck": "tsc -b",
     "lint": "eslint \"packages/**/*.{ts,tsx}\" \"apps/**/*.{ts,tsx}\"",

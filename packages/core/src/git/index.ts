@@ -29,7 +29,7 @@ export async function getDiff(dir: string): Promise<string> {
 }
 
 /**
- * Creates a new branch named aiagent/<sanitized-task>.
+ * Creates a new branch named xmai/<sanitized-task>.
  * Returns the branch name. If creation fails (e.g. not a git repo),
  * returns null silently — caller should continue without branching.
  */
@@ -42,7 +42,7 @@ export async function createAgentBranch(dir: string, task: string): Promise<stri
     .replace(/^-+|-+$/g, '')
     .slice(0, 40)
 
-  const branch = `aiagent/${slug}`
+  const branch = `xmai/${slug}`
 
   // Check if branch already exists — append timestamp if so
   const existing = await execa('git', ['branch', '--list', branch], { cwd: dir, reject: false })

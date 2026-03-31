@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import type { AgentEvent } from '@aiagent/core'
+import type { AgentEvent } from '@xmai/core'
 
 const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 let spinnerIdx = 0

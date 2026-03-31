@@ -1,6 +1,6 @@
-import { KiroEngine } from '@aiagent/core'
-import type { KiroEngineConfig } from '@aiagent/core'
-import type { AgentEvent, Harness } from '@aiagent/core'
+import { KiroEngine } from '@xmai/core'
+import type { KiroEngineConfig } from '@xmai/core'
+import type { AgentEvent, Harness } from '@xmai/core'
 import type { ReviewOptions } from './review.js'
 
 export class KiroFeatureAgent {

@@ -1,4 +1,4 @@
-# aiagent2.0
+# xmai2.0
 
 > AI 驱动的前端开发助手，让 Agent 接管 Next.js、React、Vue、Flutter、Rust 项目的日常编码工作。
 
@@ -10,9 +10,9 @@
 |------|------|------|
 | **KiroEngine** | 调用本地 kiro-cli，实时流式输出，无需 API Key | ✅ |
 | **Hook 系统** | 写文件后自动触发 tsc / eslint / tests，变量替换，阻塞/非阻塞 | ✅ |
-| **Git 集成** | 自动创建 `aiagent/<task>` 分支、展示 diff、undo 回滚 | ✅ |
+| **Git 集成** | 自动创建 `xmai/<task>` 分支、展示 diff、undo 回滚 | ✅ |
 | **Intent Router** | 自动识别任务类型 → feature / bug / review / refactor / test / docs | ✅ |
-| **会话日志** | 每次运行记录到 `.aiagent/runs.jsonl`，支持 status 查看 | ✅ |
+| **会话日志** | 每次运行记录到 `.xmai/runs.jsonl`，支持 status 查看 | ✅ |
 | **Harness 加载** | 内置模板 + 项目 overrides 合并，支持规范注入 | ✅ |
 | **专职 Agent** | Feature / Bug / Review（kiro 版 + API 版） | ✅ |
 | **CLI 命令** | run / review / status / undo / init / harness | ✅ |
@@ -23,7 +23,7 @@
 
 ## 解决什么问题
 
-### 没有 aiagent 时
+### 没有 xmai 时
 
 ```
 你："帮我加一个用户角色筛选功能"
@@ -38,18 +38,18 @@ AI 回答了一段代码，但是：
 你：手动修了 4 个问题，花了 30 分钟
 ```
 
-### 有 aiagent 时
+### 有 xmai 时
 
 ```
-aiagent run "给用户列表加角色筛选功能"
+xmai run "给用户列表加角色筛选功能"
 
 Agent：
   1. 读取 Harness → 知道项目用 Tailwind、已有 <Select>、组件放哪里
   2. 读取现有代码 → 复用已有组件和 API
   3. 生成完整实现 + 测试文件
   4. 自动跑 tsc → 发现错误 → 写到 hook_end 事件
-  5. 自动创建 aiagent/xxx 分支，展示 colored git diff
-  6. 记录本次运行到 .aiagent/runs.jsonl
+  5. 自动创建 xmai/xxx 分支，展示 colored git diff
+  6. 记录本次运行到 .xmai/runs.jsonl
 
 你：3 分钟 review，merge
 ```
@@ -69,7 +69,7 @@ Agent：
 ## 架构
 
 ```
-aiagent2.0/
+xmai2.0/
 ├── apps/cli/src/
 │   ├── index.ts          # 6 个 CLI 命令入口
 │   └── render.ts         # 终端渲染：spinner、hook 输出、colored diff
@@ -86,7 +86,7 @@ aiagent2.0/
 │   │   ├── hooks.ts      # runHooks：变量替换、pattern 匹配、阻塞执行
 │   │   └── types.ts      # Harness / HookConfig / ProjectConfig schema
 │   ├── git/index.ts      # isGitRepo / createAgentBranch / getDiff / undo
-│   ├── session/log.ts    # appendRun / readRuns / lastRun → .aiagent/runs.jsonl
+│   ├── session/log.ts    # appendRun / readRuns / lastRun → .xmai/runs.jsonl
 │   └── providers/        # Anthropic + OpenAI provider 抽象
 │
 ├── packages/agents/src/
@@ -116,15 +116,15 @@ kiro-cli --version   # 本地已安装并登录
 
 kiro-cli 安装：https://kiro.dev
 
-### 安装 aiagent
+### 安装 xmai
 
 ```bash
-git clone https://github.com/yourname/aiagent2.0
-cd aiagent2.0
+git clone https://github.com/yourname/xmai2.0
+cd xmai2.0
 pnpm install
 pnpm build
 
-# 全局链接（可选，让 aiagent 命令全局可用）
+# 全局链接（可选，让 xmai 命令全局可用）
 npm link apps/cli
 ```
 
@@ -134,13 +134,13 @@ npm link apps/cli
 cd your-project
 
 # 交互式选择框架
-aiagent init
+xmai init
 
 # 或直接指定
-aiagent init --framework nextjs --provider kiro
+xmai init --framework nextjs --provider kiro
 ```
 
-生成 `aiagent.config.json`：
+生成 `xmai.config.json`：
 
 ```json
 {
@@ -153,30 +153,30 @@ aiagent init --framework nextjs --provider kiro
 
 ## 命令参考
 
-### `aiagent run [task]` — 执行开发任务
+### `xmai run [task]` — 执行开发任务
 
 ```bash
 # 自然语言描述任务（自动识别类型）
-aiagent run "给用户列表加角色筛选功能"
+xmai run "给用户列表加角色筛选功能"
 
 # 中文任务也支持
-aiagent run "在 dashboard 页面的用户表格里，给每行添加删除按钮"
+xmai run "在 dashboard 页面的用户表格里，给每行添加删除按钮"
 
 # 指定 Agent 类型
-aiagent run "登录按钮点击没反应" --agent bug
-aiagent run "重构 UserCard 组件" --agent refactor
+xmai run "登录按钮点击没反应" --agent bug
+xmai run "重构 UserCard 组件" --agent refactor
 
 # 指定项目目录（不在项目目录下时）
-aiagent run "加分页组件" --project /path/to/your/project
+xmai run "加分页组件" --project /path/to/your/project
 
 # 不自动创建分支（直接在当前分支操作）
-aiagent run "修改 Button 样式" --no-branch
+xmai run "修改 Button 样式" --no-branch
 
 # 显示完整 hook 输出
-aiagent run "重构 auth 模块" --verbose
+xmai run "重构 auth 模块" --verbose
 
 # 使用 Anthropic API 而非 kiro
-aiagent run "给 checkout 加单测" --provider anthropic --model claude-sonnet-4-5
+xmai run "给 checkout 加单测" --provider anthropic --model claude-sonnet-4-5
 ```
 
 | 选项 | 说明 | 默认值 |
@@ -202,20 +202,20 @@ aiagent run "给 checkout 加单测" --provider anthropic --model claude-sonnet-
 
 ---
 
-### `aiagent review [path]` — 代码审查
+### `xmai review [path]` — 代码审查
 
 ```bash
 # 审查一个目录
-aiagent review src/components/features/checkout/
+xmai review src/components/features/checkout/
 
 # 审查 git staged 的改动（commit 前快速检查）
-aiagent review --staged
+xmai review --staged
 
 # 审查当前工作区所有改动
-aiagent review --diff
+xmai review --diff
 
 # 指定项目目录
-aiagent review --staged --project /path/to/project
+xmai review --staged --project /path/to/project
 ```
 
 输出格式：
@@ -225,47 +225,47 @@ aiagent review --staged --project /path/to/project
 
 ---
 
-### `aiagent status` — 查看运行历史
+### `xmai status` — 查看运行历史
 
 ```bash
-aiagent status
-aiagent status --project /path/to/project
+xmai status
+xmai status --project /path/to/project
 ```
 
 输出最近 10 次运行：任务描述、时间、耗时、文件变更数、分支名。
 
 ---
 
-### `aiagent undo` — 撤销上次运行
+### `xmai undo` — 撤销上次运行
 
 ```bash
-aiagent undo
+xmai undo
 ```
 
 交互确认后：
-- 删除上次创建的 `aiagent/<xxx>` 分支
+- 删除上次创建的 `xmai/<xxx>` 分支
 - 切回原始分支
 
 > 注意：只能撤销使用了 git 分支的运行（默认行为）。
 
 ---
 
-### `aiagent init` — 初始化配置
+### `xmai init` — 初始化配置
 
 ```bash
-aiagent init                          # 交互选择框架
-aiagent init --framework vue          # Vue 3
-aiagent init --framework flutter      # Flutter
-aiagent init --framework rust         # Rust
-aiagent init --framework nextjs --provider anthropic   # 使用 Anthropic API
+xmai init                          # 交互选择框架
+xmai init --framework vue          # Vue 3
+xmai init --framework flutter      # Flutter
+xmai init --framework rust         # Rust
+xmai init --framework nextjs --provider anthropic   # 使用 Anthropic API
 ```
 
 ---
 
-### `aiagent harness` — 查看当前 Harness
+### `xmai harness` — 查看当前 Harness
 
 ```bash
-aiagent harness
+xmai harness
 ```
 
 显示当前项目加载的：
@@ -316,7 +316,7 @@ hook_end 事件 → 渲染输出到终端
 ### 在项目里自定义 Hook
 
 ```json
-// aiagent.config.json
+// xmai.config.json
 {
   "framework": "nextjs",
   "provider": "kiro",
@@ -340,7 +340,7 @@ hook_end 事件 → 渲染输出到终端
 
 ## 自定义 Harness（项目规范注入）
 
-在 `aiagent.config.json` 的 `overrides` 字段覆盖内置规范：
+在 `xmai.config.json` 的 `overrides` 字段覆盖内置规范：
 
 ```json
 {
@@ -367,7 +367,7 @@ hook_end 事件 → 渲染输出到终端
 ```
 
 **Harness 优先级（高到低）：**
-1. `aiagent.config.json` 的 `overrides`
+1. `xmai.config.json` 的 `overrides`
 2. 项目自定义 `harnessPath` 指向的 JSON
 3. 内置框架模板（`harnesses/{framework}/harness.json`）
 
@@ -391,34 +391,34 @@ hook_end 事件 → 渲染输出到终端
 cd your-project
 
 # 1. 让 Agent 实现功能（自动建分支、自动跑类型检查）
-aiagent run "在订单列表页添加按状态筛选，状态：待付款/已付款/已发货/已完成"
+xmai run "在订单列表页添加按状态筛选，状态：待付款/已付款/已发货/已完成"
 
 # 2. 查看 diff（Agent 运行结束后自动展示，也可手动查看）
-git diff main..aiagent/xxx
+git diff main..xmai/xxx
 
 # 3. Review 并合并
-git checkout main && git merge aiagent/xxx
+git checkout main && git merge xmai/xxx
 ```
 
 ### 修 Bug
 
 ```bash
-aiagent run "用户在 Safari 上点击提交按钮没有反应，控制台报 TypeError: Cannot read properties of undefined (reading 'value')" --agent bug
+xmai run "用户在 Safari 上点击提交按钮没有反应，控制台报 TypeError: Cannot read properties of undefined (reading 'value')" --agent bug
 ```
 
 ### Commit 前 Review
 
 ```bash
 git add src/components/features/cart/
-aiagent review --staged
+xmai review --staged
 # 输出 [MUST] / [SUGGEST] / [OPTIONAL] 分级建议
 ```
 
 ### 撤销失败的 Agent 运行
 
 ```bash
-aiagent status        # 查看上次运行的分支名
-aiagent undo          # 删除 agent 分支，切回原分支
+xmai status        # 查看上次运行的分支名
+xmai undo          # 删除 agent 分支，切回原分支
 ```
 
 ---
@@ -426,7 +426,7 @@ aiagent undo          # 删除 agent 分支，切回原分支
 ## Roadmap
 
 ### 近期（P2）
-- [ ] **Stack Trace → 自动修复**：`aiagent fix --trace "TypeError..."` — 解析报错定位到文件行，最小改动修复
+- [ ] **Stack Trace → 自动修复**：`xmai fix --trace "TypeError..."` — 解析报错定位到文件行，最小改动修复
 - [ ] **React 框架 Harness**：补充 React（非 Next.js）内置模板
 
 ### 中期

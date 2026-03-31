@@ -15,7 +15,7 @@ export interface RunRecord {
 }
 
 function sessionDir(projectDir: string): string {
-  return join(projectDir, '.aiagent')
+  return join(projectDir, '.xmai')
 }
 
 function logPath(projectDir: string): string {

@@ -7,13 +7,13 @@ import {
   loadHarness, findProjectConfig, classifyIntent,
   isGitRepo, createAgentBranch, currentBranch, getDiff, getChangedFiles,
   deleteAgentBranch, appendRun, readRuns, lastRun,
-} from '@aiagent/core'
-import type { ProjectConfig, ProviderName, KiroEngineConfig, AgentEngineConfig, ProviderConfig } from '@aiagent/core'
+} from '@xmai/core'
+import type { ProjectConfig, ProviderName, KiroEngineConfig, AgentEngineConfig, ProviderConfig } from '@xmai/core'
 import {
   FeatureAgent, BugAgent, ReviewAgent,
   KiroFeatureAgent, KiroBugAgent, KiroReviewAgent,
-} from '@aiagent/agents'
-import type { ReviewOptions } from '@aiagent/agents'
+} from '@xmai/agents'
+import type { ReviewOptions } from '@xmai/agents'
 import { renderEvent } from './render.js'
 
 const VERSION = '0.1.0'
@@ -30,7 +30,7 @@ function resolveProvider(configProvider?: ProviderName): { provider: ProviderNam
 }
 
 program
-  .name('aiagent')
+  .name('xmai')
   .description('AI development assistant — powered by kiro-cli, Anthropic, or OpenAI')
   .version(VERSION)
 
@@ -51,7 +51,7 @@ program
     let projectConfig: ProjectConfig | null = await findProjectConfig(opts.project)
     if (!projectConfig) {
       if (!opts.framework) {
-        console.error(chalk.red('No aiagent.config.json found.\nRun: aiagent init --framework nextjs'))
+        console.error(chalk.red('No xmai.config.json found.\nRun: xmai init --framework nextjs'))
         process.exit(1)
       }
       projectConfig = { framework: opts.framework as ProjectConfig['framework'], provider: 'kiro' }
@@ -106,7 +106,7 @@ program
         verbose: opts.verbose ?? false,
       }
 
-      let generator: AsyncGenerator<import('@aiagent/core').AgentEvent>
+      let generator: AsyncGenerator<import('@xmai/core').AgentEvent>
       switch (agentType) {
         case 'bug':   generator = new KiroBugAgent(harness, kiroConfig).run(task); break
         case 'review':
@@ -131,7 +131,7 @@ program
       const engineConfig: AgentEngineConfig = { provider: providerConfig, projectDir: opts.project }
 
       let agent: FeatureAgent | BugAgent | ReviewAgent
-      let generator: AsyncGenerator<import('@aiagent/core').AgentEvent>
+      let generator: AsyncGenerator<import('@xmai/core').AgentEvent>
 
       switch (agentType) {
         case 'bug':
@@ -186,7 +186,7 @@ program
     if (agentBranch) {
       console.log(chalk.gray(`\nBranch: ${chalk.cyan(agentBranch)}`))
       console.log(chalk.gray(`  git diff ${originalBranch}..${agentBranch}   to see all changes`))
-      console.log(chalk.gray(`  aiagent undo                       to discard and return to ${originalBranch}`))
+      console.log(chalk.gray(`  xmai undo                       to discard and return to ${originalBranch}`))
     }
   })
 
@@ -240,7 +240,7 @@ program
   .action(async (opts) => {
     const runs = await readRuns(opts.project)
     if (!runs.length) {
-      console.log(chalk.gray('No runs yet. Try: aiagent run "add a button"'))
+      console.log(chalk.gray('No runs yet. Try: xmai run "add a button"'))
       return
     }
 
@@ -289,7 +289,7 @@ program
 // ─── init ────────────────────────────────────────────────────────────────────
 program
   .command('init')
-  .description('Initialize aiagent in a project')
+  .description('Initialize xmai in a project')
   .option('-f, --framework <name>', 'framework (nextjs|react|vue|flutter|rust)')
   .option('--provider <name>', 'AI provider (kiro|anthropic|openai)', 'kiro')
   .action(async (opts) => {
@@ -312,13 +312,13 @@ program
       provider: opts.provider as ProviderName,
     }
 
-    await writeFile(join(process.cwd(), 'aiagent.config.json'), JSON.stringify(config, null, 2))
-    console.log(chalk.green(`\n✓ aiagent.config.json created (${framework} / ${opts.provider})`))
+    await writeFile(join(process.cwd(), 'xmai.config.json'), JSON.stringify(config, null, 2))
+    console.log(chalk.green(`\n✓ xmai.config.json created (${framework} / ${opts.provider})`))
     if (opts.provider === 'kiro') {
-      console.log(chalk.gray('Ready. Run: aiagent run "your task"'))
+      console.log(chalk.gray('Ready. Run: xmai run "your task"'))
     } else {
       const envVar = opts.provider === 'openai' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY'
-      console.log(chalk.gray(`Next: export ${envVar}=<key> && aiagent run`))
+      console.log(chalk.gray(`Next: export ${envVar}=<key> && xmai run`))
     }
   })
 
@@ -328,7 +328,7 @@ program
   .description('Show the active harness for this project')
   .action(async () => {
     const config = await findProjectConfig()
-    if (!config) { console.error(chalk.red('No aiagent.config.json')); process.exit(1) }
+    if (!config) { console.error(chalk.red('No xmai.config.json')); process.exit(1) }
     const h = await loadHarness(config)
     console.log(chalk.bold(`\n${h.name}`) + chalk.gray(`  (${h.framework} / ${config.provider ?? 'kiro'})`))
     console.log(chalk.bold('\nConventions:'))

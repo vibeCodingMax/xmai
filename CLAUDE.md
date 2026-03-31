@@ -1,4 +1,4 @@
-# aiagent2.0
+# xmai2.0
 
 AI-powered development assistant that replaces frontend engineers for Next.js, React, Vue, Flutter, and Rust projects.
 

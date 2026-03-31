@@ -1,5 +1,5 @@
-import { AgentEngine } from '@aiagent/core'
-import type { AgentEvent, Harness, AgentEngineConfig } from '@aiagent/core'
+import { AgentEngine } from '@xmai/core'
+import type { AgentEvent, Harness, AgentEngineConfig } from '@xmai/core'
 
 /**
  * Bug Agent — diagnoses and fixes issues with minimal blast radius.

@@ -1,17 +1,17 @@
 {
-  "name": "@aiagent/cli",
+  "name": "@xmai/cli",
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "aiagent": "./dist/index.js"
+    "xmai": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch"
   },
   "dependencies": {
-    "@aiagent/agents": "workspace:*",
-    "@aiagent/core": "workspace:*",
+    "@xmai/agents": "workspace:*",
+    "@xmai/core": "workspace:*",
     "@inquirer/prompts": "^8.3.2",
     "chalk": "^5.3.0",
     "commander": "^12.0.0",

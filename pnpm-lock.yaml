@@ -26,15 +26,15 @@ importers:
 
   apps/cli:
     dependencies:
-      '@aiagent/agents':
-        specifier: workspace:*
-        version: link:../../packages/agents
-      '@aiagent/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@inquirer/prompts':
         specifier: ^8.3.2
         version: 8.3.2(@types/node@25.5.0)
+      '@xmai/agents':
+        specifier: workspace:*
+        version: link:../../packages/agents
+      '@xmai/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       chalk:
         specifier: ^5.3.0
         version: 5.6.2
@@ -57,7 +57,7 @@ importers:
 
   packages/agents:
     dependencies:
-      '@aiagent/core':
+      '@xmai/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:

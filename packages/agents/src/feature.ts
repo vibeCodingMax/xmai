@@ -1,7 +1,7 @@
-import { AgentEngine } from '@aiagent/core'
-import type { AgentEvent } from '@aiagent/core'
-import type { Harness } from '@aiagent/core'
-import type { AgentEngineConfig } from '@aiagent/core'
+import { AgentEngine } from '@xmai/core'
+import type { AgentEvent } from '@xmai/core'
+import type { Harness } from '@xmai/core'
+import type { AgentEngineConfig } from '@xmai/core'
 
 /**
  * Feature Agent — implements new functionality end-to-end.

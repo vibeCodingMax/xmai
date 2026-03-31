@@ -47,7 +47,7 @@ async function loadBaseHarness(framework: Framework, customPath?: string): Promi
   if (!existsSync(harnessPath)) {
     throw new Error(
       `Harness not found for framework "${framework}" at: ${harnessPath}\n` +
-      `Run: aiagent init --framework ${framework}`
+      `Run: xmai init --framework ${framework}`
     )
   }
 
@@ -56,13 +56,13 @@ async function loadBaseHarness(framework: Framework, customPath?: string): Promi
 }
 
 /**
- * Finds aiagent.config.json walking up from cwd
+ * Finds xmai.config.json walking up from cwd
  */
 export async function findProjectConfig(startDir = process.cwd()): Promise<ProjectConfig | null> {
   let dir = startDir
 
   while (true) {
-    const configPath = join(dir, 'aiagent.config.json')
+    const configPath = join(dir, 'xmai.config.json')
     if (existsSync(configPath)) {
       const raw = await readFile(configPath, 'utf-8')
       const { ProjectConfigSchema } = await import('./types.js')
