@@ -1,0 +1,119 @@
+{
+  "framework": "nextjs",
+  "name": "Next.js App Router",
+  "systemContext": "This is a Next.js 14+ project using the App Router. TypeScript is required everywhere. Styling uses Tailwind CSS. State management uses Zustand for client state. Data fetching happens in Server Components unless interactivity is required.",
+
+  "conventions": [
+    {
+      "category": "Routing & Pages",
+      "rules": [
+        "Use App Router (app/) exclusively — never Pages Router (pages/)",
+        "Server Components are the default — only add 'use client' when you need interactivity or browser APIs",
+        "Data fetching belongs in Server Components using async/await",
+        "Route groups use (parentheses) for layout organization without affecting URL",
+        "Dynamic segments use [brackets], catch-all use [...slug]"
+      ]
+    },
+    {
+      "category": "Component Structure",
+      "rules": [
+        "UI primitives go in /components/ui/ (buttons, inputs, modals)",
+        "Business components go in /components/features/{domain}/",
+        "Each component file exports one primary component as default",
+        "Component props use interface, not type alias",
+        "Every new component must have a corresponding .test.tsx file"
+      ]
+    },
+    {
+      "category": "File Naming",
+      "rules": [
+        "Component files: PascalCase (UserCard.tsx)",
+        "Utility files: camelCase (formatDate.ts)",
+        "Test files: ComponentName.test.tsx",
+        "Page files: page.tsx, layout.tsx, loading.tsx, error.tsx",
+        "API routes: route.ts inside app/api/"
+      ]
+    },
+    {
+      "category": "TypeScript",
+      "rules": [
+        "Never use 'any' — use 'unknown' and narrow with guards",
+        "All async functions must have explicit return types",
+        "API response types go in /types/api.ts",
+        "Use Zod for runtime validation of external data",
+        "Prefer type inference over explicit annotation when obvious"
+      ]
+    },
+    {
+      "category": "Styling",
+      "rules": [
+        "Use Tailwind CSS utility classes — no inline styles",
+        "Use cn() helper from /lib/utils for conditional classes",
+        "Follow 8px spacing grid (2, 4, 6, 8, 12, 16, 24, 32...)",
+        "Dark mode uses Tailwind's dark: variant",
+        "Custom colors defined in tailwind.config.ts, not hardcoded"
+      ]
+    },
+    {
+      "category": "State Management",
+      "rules": [
+        "Server state: use React's built-in cache() and fetch()",
+        "Client state: use Zustand stores in /stores/",
+        "Form state: use React Hook Form",
+        "URL state: use nuqs or searchParams",
+        "Never use useEffect for data fetching — use Server Components"
+      ]
+    },
+    {
+      "category": "Testing",
+      "rules": [
+        "Unit tests: Vitest + React Testing Library",
+        "E2E tests: Playwright in /e2e/",
+        "Test user behavior, not implementation details",
+        "Mock external APIs, never internal modules",
+        "Every form and user interaction needs at least one test"
+      ]
+    }
+  ],
+
+  "hooks": [
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.{ts,tsx}",
+      "command": "cd {projectDir} && npx tsc --noEmit 2>&1 | head -30",
+      "blocking": true,
+      "failOnError": false
+    },
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.{ts,tsx,js,jsx}",
+      "command": "cd {projectDir} && npx eslint --fix {filePath} 2>&1 | head -20",
+      "blocking": true,
+      "failOnError": false
+    },
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.test.{ts,tsx}",
+      "command": "cd {projectDir} && npx vitest run {filePath} 2>&1 | tail -20",
+      "blocking": true,
+      "failOnError": false
+    }
+  ],
+
+  "forbiddenZones": [
+    {
+      "path": "app/api/auth/**",
+      "reason": "Auth routes require security review before modification"
+    },
+    {
+      "path": ".env*",
+      "reason": "Environment files must never be modified by agents"
+    },
+    {
+      "path": "prisma/migrations/**",
+      "reason": "DB migrations are irreversible — require human review"
+    }
+  ],
+
+  "mcpServers": []
+}

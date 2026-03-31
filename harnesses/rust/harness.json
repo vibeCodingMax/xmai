@@ -1,0 +1,67 @@
+{
+  "framework": "rust",
+  "name": "Rust (Tokio + Axum)",
+  "systemContext": "Rust project using Tokio for async runtime. Axum for HTTP if applicable. Follows clean architecture: domain, application, infrastructure layers.",
+
+  "conventions": [
+    {
+      "category": "Error Handling",
+      "rules": [
+        "Never use .unwrap() or .expect() in production code — use ? operator",
+        "Define domain errors with thiserror",
+        "Application-level errors use anyhow::Result",
+        "All public functions that can fail return Result<T, E>"
+      ]
+    },
+    {
+      "category": "Architecture",
+      "rules": [
+        "Domain layer: pure Rust, no framework dependencies",
+        "Application layer: orchestrates domain, owns use cases",
+        "Infrastructure layer: DB, HTTP, external services",
+        "Dependencies point inward — infrastructure depends on domain, never reverse"
+      ]
+    },
+    {
+      "category": "Async",
+      "rules": [
+        "Use tokio::spawn for concurrent tasks",
+        "Prefer async/await over manual Future implementations",
+        "Use Arc<T> for shared state across tasks",
+        "Avoid blocking calls in async context — use spawn_blocking"
+      ]
+    },
+    {
+      "category": "Code Style",
+      "rules": [
+        "Run cargo fmt before every commit",
+        "All clippy warnings must be resolved",
+        "Public API must have doc comments (///)",
+        "Module names: snake_case, types: PascalCase, constants: SCREAMING_SNAKE_CASE"
+      ]
+    }
+  ],
+
+  "hooks": [
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.rs",
+      "command": "cd {projectDir} && cargo fmt && cargo clippy -- -D warnings 2>&1 | head -30",
+      "blocking": true,
+      "failOnError": false
+    },
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.rs",
+      "command": "cd {projectDir} && cargo test 2>&1 | tail -20",
+      "blocking": false,
+      "failOnError": false
+    }
+  ],
+
+  "forbiddenZones": [
+    { "path": "Cargo.lock", "reason": "Lock file changes require dependency audit" }
+  ],
+
+  "mcpServers": []
+}

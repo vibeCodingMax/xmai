@@ -1,0 +1,28 @@
+{
+  "name": "@aiagent/core",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.0",
+    "execa": "^9.0.0",
+    "glob": "^11.0.0",
+    "minimatch": "^10.2.4",
+    "openai": "^6.33.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "framework": "vue",
+  "name": "Vue 3 + Nuxt",
+  "systemContext": "Vue 3 project using Composition API and <script setup> syntax. Nuxt 3 for SSR/SSG if applicable. Pinia for state management. TypeScript required. Styling with Tailwind CSS or UnoCSS.",
+
+  "conventions": [
+    {
+      "category": "Component Structure",
+      "rules": [
+        "Always use <script setup lang='ts'> — never Options API",
+        "Component files: PascalCase (UserCard.vue)",
+        "Composables go in /composables/ prefixed with 'use' (useAuth.ts)",
+        "Props use defineProps with TypeScript generics, not runtime validators",
+        "Emits use defineEmits with TypeScript signature"
+      ]
+    },
+    {
+      "category": "State Management",
+      "rules": [
+        "Pinia stores go in /stores/{domain}.ts",
+        "Use storeToRefs() to destructure reactive store properties",
+        "Never mutate state outside of store actions",
+        "Server data: use useFetch() or useAsyncData() in Nuxt"
+      ]
+    },
+    {
+      "category": "TypeScript",
+      "rules": [
+        "No 'any' — use 'unknown' with type guards",
+        "All composables must return typed objects",
+        "API types go in /types/api.ts"
+      ]
+    }
+  ],
+
+  "hooks": [
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.{ts,vue}",
+      "command": "cd {projectDir} && npx vue-tsc --noEmit 2>&1 | head -30",
+      "blocking": true,
+      "failOnError": false
+    },
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.{ts,vue,js}",
+      "command": "cd {projectDir} && npx eslint --fix {filePath} 2>&1 | head -20",
+      "blocking": true,
+      "failOnError": false
+    }
+  ],
+
+  "forbiddenZones": [
+    { "path": ".env*", "reason": "Environment files must never be modified by agents" }
+  ],
+
+  "mcpServers": []
+}

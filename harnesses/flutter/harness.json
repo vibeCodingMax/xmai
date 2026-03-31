@@ -1,0 +1,68 @@
+{
+  "framework": "flutter",
+  "name": "Flutter + Riverpod",
+  "systemContext": "Flutter project using Riverpod for state management and go_router for navigation. Dart 3+ with null safety. Feature-first folder structure.",
+
+  "conventions": [
+    {
+      "category": "Project Structure",
+      "rules": [
+        "Feature-first: lib/features/{feature}/presentation/, application/, domain/, infrastructure/",
+        "Shared widgets: lib/shared/widgets/",
+        "Theme and tokens: lib/core/theme/",
+        "Never put business logic in Widget build() methods"
+      ]
+    },
+    {
+      "category": "State Management",
+      "rules": [
+        "Use Riverpod with code generation (@riverpod annotation)",
+        "Providers go in the application/ layer of each feature",
+        "Use AsyncNotifier for async state, Notifier for sync state",
+        "Never use setState() for business logic — only for local UI state"
+      ]
+    },
+    {
+      "category": "Widgets",
+      "rules": [
+        "Prefer ConsumerWidget over StatefulWidget when using providers",
+        "Extract widgets into separate files when they exceed 50 lines",
+        "Widget file names: snake_case (user_card.dart)",
+        "Always specify const constructors where possible"
+      ]
+    },
+    {
+      "category": "Dart",
+      "rules": [
+        "Null safety is required everywhere — no late without initialization",
+        "Use freezed for data classes and union types",
+        "Error handling with Either<Failure, Success> from fpdart",
+        "No print() in production code — use a logger package"
+      ]
+    }
+  ],
+
+  "hooks": [
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.dart",
+      "command": "cd {projectDir} && dart format {filePath} && flutter analyze {filePath} 2>&1 | tail -20",
+      "blocking": true,
+      "failOnError": false
+    },
+    {
+      "trigger": "PostWrite",
+      "pattern": "**/*.dart",
+      "command": "cd {projectDir} && dart test 2>&1 | tail -20",
+      "blocking": false,
+      "failOnError": false
+    }
+  ],
+
+  "forbiddenZones": [
+    { "path": "android/**", "reason": "Native Android config requires platform review" },
+    { "path": "ios/**", "reason": "Native iOS config requires platform review" }
+  ],
+
+  "mcpServers": []
+}

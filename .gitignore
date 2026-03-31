@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Local AI config
+.claude/
+
+# aiagent runtime
+.aiagent/runs.jsonl
+
+# Test
+coverage
+
+# pnpm
+.pnpm-store
+
+# Turbo (if added later)
+.turbo
+test-demo/
